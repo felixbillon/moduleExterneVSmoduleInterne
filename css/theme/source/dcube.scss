@@ -1,0 +1,39 @@
+/**
+ * Dcube theme for reveal.js.
+ *
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+// Include theme-specific fonts
+@import url(../../lib/font/light_pixel_7/light_pixel.css);
+@import url(../../lib/font/upheaval_pro/upHeaval.css);
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #FFFFFF;
+
+$mainFont: 'LightPixel', sans-serif;
+$mainFontSize: 28px;
+$mainColor: #000000;
+$mainFontWeight: 400;
+
+$headingFont: 'UpHeaval', Impact, sans-serif;
+$headingColor: #007ACC;
+
+$heading1Size: 3.00em;
+$heading2Size: 1.90em;
+$heading3Size: 0.90em;
+$heading4Size: 0.60em;
+
+$linkColor: lighten( $headingColor, 10% );
+$linkColorHover: lighten( $linkColor, 15% );
+
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------

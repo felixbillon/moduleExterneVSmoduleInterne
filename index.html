@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Module externe vs module interne</title>
+      <meta name="description" content="Comparaison module interne et module externe">
+      <meta name="author" content="Félix Billon">
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+      <link rel="stylesheet" href="css/reveal.css">
+      <link rel="stylesheet" href="css/theme/dcube.css" id="theme">
+	  <link rel="stylesheet" href="css/animate.css">
+      <!-- Code syntax highlighting -->
+      <link rel="stylesheet" href="lib/css/zenburn.css">
+	  <style>
+		  @font-face {
+		  font-family: 'KingOfFighter'; 
+		  src: url('./font/The King of Fighters Font.ttf'); 
+		  }
+	  </style>
+      <!-- Printing and PDF exports -->
+      <script>
+         var link = document.createElement( 'link' );
+         link.rel = 'stylesheet';
+         link.type = 'text/css';
+         link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+         document.getElementsByTagName( 'head' )[0].appendChild( link );
+      </script>
+      <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+      <![endif]-->
+   </head>
+   <body>
+      <div class="reveal">
+         <!-- ====================== BETWEEN REVEAL AND SLIDES ====================== -->
+         <header class="left" style="position: absolute; left: 0px;"><img src="./img/logoDcube.png" /></header>
+         <!-- ====================== BETWEEN REVEAL AND SLIDES ====================== -->
+         <!-- Any section element inside of this container is displayed as a slide -->
+         <div class="slides">
+            <section>
+               <h1>Module interne<br/>
+			   <img src="./img/Vs.png" class="animated infinite tada" style="margin:0;background:none;border:none;box-shadow:none" /> <br/>
+				Module externe</h1>
+               <p>
+                  <small>Par Félix Billon</small>
+               </p>
+            </section>
+            <section>
+               <h1>Sommaire</h1>
+               <ol>
+                  <li class="fragment roll-in">Introduction aux modules</li>
+                  <li class="fragment roll-in">Module interne</li>
+                  <li class="fragment roll-in">Module externe</li>
+				  <li class="fragment roll-in">Conclusion</li>
+               </ol>
+            </section>
+            <section>
+               <section>
+                  <h2>Introduction aux modules : pourquoi ?</h2>
+                  <ul>
+				     <li class="fragment roll-in">Eviter les collisions de nom dans l'espace de nom global.</li>
+					 <li class="fragment roll-in">Découper, organiser et diviser les responsabilités.</li>
+                     <li class="fragment roll-in">Encapsulation.</li>
+                  </ul>
+               </section>
+               <section>
+                  <h2>Introduction aux modules : module pattern</h2>
+                      <pre class="fragment roll-in"><code class="javascript" data-trim contenteditable>
+/**Objet anonyme**/				  
+var Module = (function () {
+
+  var privateMethod = function () {};
+  
+  return {
+    publicMethodOne: function () {
+      // Je peut appeler ma méthode privées
+    },
+    publicMethodtwo: function () {
+
+    },
+    publicMethodThree: function () {
+
+    }
+  };
+
+})();
+
+/**Objet local**/				
+var Module = (function () {
+						  
+  var myObject = {};
+						  
+  var privateMethod = function () {};
+						  
+  myObject.publicMethodOne = function () {
+ 
+  };
+						  
+  return myObject;
+						  
+})();
+					  </code></pre>
+               </section>
+               <section>
+                 <h2>Introduction aux modules : revealing module pattern</h2>
+                      <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+var Module = (function () {
+
+  var privateMethod = function () {
+    // privée
+  };
+
+  var someMethod = function () {
+    // public
+  };
+
+  var anotherMethod = function () {
+    // public
+  };
+  
+  return {
+    someMethod: someMethod,
+    anotherMethod: anotherMethod
+  };
+
+})();
+					  </code></pre>
+               </section>
+               <section>
+                  <h2>Introduction aux modules : AMD et CommonJS Module</h2>
+                  <ul>
+					 <li class="fragment roll-in">Définition des modules, chargement des modules et de leurs dépendances.</li>
+                     <li class="fragment roll-in">AMD -> coté browser -> chargement asynchrone.</li>
+					 <li class="fragment roll-in">CommonJS Modules -> coté serveur -> chargement synchrone.</li>
+					 <li class="fragment roll-in">Implémentations AMD : RequireJS, curl.js, lsjs, ...</li>
+					 <li class="fragment roll-in">Implémentations CommonJs Modules: Node, Narwhal, ...</li>
+                  </ul>
+               </section>
+			     <section>
+                  <h2>Introduction aux modules : UMD et EcmaScript 6</h2>
+                  <ul>
+					 <li class="fragment roll-in">UMD -> compatible AMD et CommonJs.</li>
+					 <li class="fragment roll-in">EcmaScript 6 -> standardisation de la syntaxe de définition des modules.</li>
+					 <li class="fragment roll-in">EcmaScript 6 -> API de chargement des modules.</li>
+                  </ul>
+               </section>
+            </section>
+            <!-- Example of nested vertical slides -->
+            <section>
+				<section>
+					<h1>Module interne <h2>(ou namespace)</h2></h1>
+					<p><img src="img/moduleInterne.gif"/></p>
+				</section>
+               <section>
+                  <h2>Module interne : le choix</h2>
+				   <ul>
+					   <li class="fragment roll-in">Beaucoup de ressources sur le net (exemple, proto,...), utilisent les modules internes.</li>
+					   <li class="fragment roll-in">La simplicité.</li>
+					   <li class="fragment roll-in">Rappel les namespaces en C#, Java, ...</li>
+				   </ul>
+               </section>
+			   <section>
+					<h2>Module interne V1 : mise en place</h2>
+					<p class="fragment roll-in">Fichier : IAnimal.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+module MonModule {
+	export interface IAnimal {
+		nbPatte: number;
+		vole: boolean;
+		crie(): void;
+	}
+}
+					</code></pre>
+					 </section>
+					  <section>
+					  <h2>Module interne V1 : mise en place</h2>
+					<p class="fragment roll-in">Fichier : Hamster.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/// &lt;reference path="IAnimal.ts" /&gt;
+module MonModule {
+	export class Hamster implements IAnimal{
+		nbPatte: number;
+		vole: boolean;
+		
+		constructor(v) {
+		  this.nbPatte = 4;
+		  this.vole = false;
+		}
+		
+		crie(): void {
+			console.log('OoO');
+		}
+	}
+}
+					</code></pre>				
+		    </section>
+			<section>
+			<h2>Module interne V1 : mise en place</h2>
+				<img src="img/traductionJS.png" />
+             </section>					
+			 <section>
+			 <h2>Module interne V1 : mise en place</h2>
+					 <p>Fichier : main.ts</p>
+                    <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/// &lt;reference path="IAnimal.ts" /&gt;
+/// &lt;reference path="Hamster.ts" /&gt;
+let hamster: MonModule.IAnimal = new MonModule.Hamster();
+hamster.crie();
+                    </code></pre>
+					 </section>
+				<section>
+					<h2>Module interne V2 : mise en place</h2>
+					<p class="fragment roll-in">Fichier : Hamster.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/// &lt;reference path="_all.ts" /&gt;
+module MonModule {
+    export class Hamster implements IAnimal{
+		nbPatte: number;
+		vole: boolean;
+						
+		constructor(v) {
+			this.nbPatte = 4;
+			this.vole = false;
+		}
+						
+		crie(): void {
+			console.log('OoO');
+		}
+	}
+}
+					</code></pre>				
+				</section>
+				<section>
+					<h2>Module interne V2 : mise en place</h2>
+					<p class="fragment roll-in">Fichier : _all.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/// &lt;reference path="IAnimal.ts" /&gt;
+/// &lt;reference path="Hamster.ts" /&gt;
+					</code></pre>	
+				</section>					
+				<section>
+					<h2>Module interne V2 : mise en place</h2>
+					<p>Fichier : main.ts</p>
+                    <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/// &lt;reference path="_all.ts" /&gt;
+let hamster: MonModule.IAnimal = new MonModule.Hamster();
+hamster.crie();
+                    </code></pre>
+				</section>
+               <section>
+                  <h2>Module interne : avantages</h2>
+                  <ul>
+                     <li class="fragment roll-in">Permet de créer des namespaces.</li>
+                     <li class="fragment roll-in">Facile d'utilisation, pas de dépendances à gérer (tout dépend de tout).</li>
+                     <li class="fragment roll-in">Compilation façile à mettre en place (option --out du compilateur Typescript).</li>
+                  </ul>
+               </section>
+               <section>
+                  <h2>Module interne : inconvenients</h2>
+                  <ul>
+                     <li class="fragment roll-in">Les performances de compilation deviennent vite désatreuses. Même avec build incrémentales.</li>
+                     <li class="fragment roll-in">Les dépendances ne sont pas explicites.</li>
+                     <li class="fragment roll-in">Beaucoup d'outil ne gère pas les modules internes.</li>
+					 <li class="fragment roll-in">Concatener les fichiers n'est pas le rôle du compilateur.</li>
+					 <li class="fragment roll-in">Le compilateur re-déclare à chaque utilisation les modules créés.</li>
+					 <li class="fragment roll-in">Les modules créés sont rattachés à l'objet window.</li>
+					 <li class="fragment roll-in">Difficile de switcher sur du CommonJs, AMD, Ecmascript 6, ...</li>
+                  </ul>
+               </section>
+            </section>
+            <section>
+			  <section>
+				  <h1>Module externe</h1>
+				  <p><img src="img/moduleExterne.gif"/></p>
+			  </section>
+			  <section>
+					<h2>Module externe : mise en place</h2>
+					<p class="fragment roll-in">Fichier : IAnimal.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+interface IAnimal {
+	nbPatte: number;
+	vole: boolean;
+	crie(): void;
+}
+
+export default IAnimal; 
+					</code></pre>
+			  </section>
+			    <section>
+					<h2>Module externe : mise en place</h2>
+					<p class="fragment roll-in">Fichier : Hamster.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+import IAnimal from './IAnimal.ts'; // OU import IAnimal = require('./IAnimal');
+			
+export default class Hamster implements IAnimal{
+		nbPatte: number;
+		vole: boolean;
+		
+		constructor(v) {
+		  this.nbPatte = 4;
+		  this.vole = false;
+		}
+		
+		crie(): void {
+			console.log('OoO');
+		}
+	}
+}
+					</code></pre>
+			  </section>
+			    <section>
+					<h2>Module externe : mise en place</h2>
+					<p class="fragment roll-in">Fichier : main.ts</p>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+import IAnimal from './IAnimal.ts'; // OU import IAnimal = require('./IAnimal');
+import Hamster from './Hamster.ts'; // OU import Hamster = require('./Hamster');	
+let hamster: IAnimal = new Hamster();
+hamster.crie();
+					</code></pre>
+			  </section>
+              <section>
+                  <h2>Module externe : avantages</h2>
+                  <ul>
+				     <li class="fragment roll-in">Performances de compilations améliorées.</li>
+				     <li class="fragment roll-in">Dépendances explicites.</li>
+				     <li class="fragment roll-in">Ne ferme la porte à aucun outil (browerify, webpack, dependency viewer...).</li>
+                     <li class="fragment roll-in">Standard avec la syntaxe ES6.</li>
+                  </ul>
+               </section>
+               <section>
+				<h2>Module externe : inconvenients</h2>
+				   <ul>
+					   <li class="fragment roll-in">Obligé d'utiliser un outil pour charger les modules.</li>
+					   <li class="fragment roll-in">AMD VS CommonJs VS UMD VS ES6</li>
+				   </ul>
+               </section>
+				<section>
+					<h2>Module externe : choix transpilation</h2>
+					<ul>
+					   <li class="fragment roll-in">'--module' paramètre du compilateur ou section 'module' du tsconfig.json</li>
+					   <li class="fragment roll-in">Valeurs possibles :
+					      <ul>
+							  <li class="fragment roll-in">AMD</li>
+							  <li class="fragment roll-in">CommonJS</li>
+							  <li class="fragment roll-in">UMD</li>
+							  <li class="fragment roll-in">SystemJS</li>
+						  </ul>
+					   </li>
+					</ul>
+				</section>
+				<section>
+					<h2>Module externe : quel outils utiliser ?</h2>
+					 <ul>
+					   <li class="fragment roll-in">RequireJS (AMD)</li>
+					   <li class="fragment roll-in">Browserify (AMD, CommonJS)</li>
+					   <li class="fragment roll-in">WebPack (AMD, CommonJS)</li>
+					   <li class="fragment roll-in">SystemJS (SystemJS)</li>
+					 </ul>
+				</section>
+            </section>
+            <section>
+               <h2>Conclusion</h2>
+               <ul>
+				  <li class="fragment roll-in">Depuis la version 1.5 module interne -> namespace.</li>		
+                  <li class="fragment roll-in">Utiliser les modules externes pour tous vos projets !</li>	
+				  <li class="fragment roll-in">Utiliser les modules internes pour proto/démo !</li>				
+               </ul>
+            </section>
+            <section data-background="./img/backgroundTypeScriptPlay.png">
+                  <h1>External module &nbsp;<span class="animated infinite tada" style="color: #FF1500;">WIN !</span></h1>
+            </section>
+         </div>
+      </div>
+      <script src="lib/js/head.min.js"></script>
+      <script src="js/reveal.js"></script>
+      <script>
+         // Full list of configuration options available at:
+         // https://github.com/hakimel/reveal.js#configuration
+         Reveal.initialize({
+         	controls: true,
+         	progress: true,
+         	history: true,
+         	center: true,
+         
+         	transition: 'slide', // none/fade/slide/convex/concave/zoom
+         
+         	// Optional reveal.js plugins
+         	dependencies: [
+         		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+         		{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+         		{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+         		{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+         		{ src: 'plugin/zoom-js/zoom.js', async: true },
+         		{ src: 'plugin/notes/notes.js', async: true }
+         	]
+         });
+         
+      </script>
+   </body>
+</html>
